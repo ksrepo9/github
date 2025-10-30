@@ -8,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: Admin@123
       MYSQL_DATABASE: mydb
       MYSQL_USER: Admin
-      MYSQL_PASSWORD: Admin@123
+      MYSQL_PASSWORD: Admin@123     
     ports:
       - "3306:3306"
     volumes:
@@ -30,6 +30,8 @@ services:
       DATABASE_USERNAME: Admin
       DATABASE_PASSWORD: Admin@123
       SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: mysql-db
+      DB_NAME : mydb
     ports:
       - "8080:8080"
     depends_on:
