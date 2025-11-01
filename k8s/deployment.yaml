@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro
+  namespace: default
+  labels:
+    app: micro
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: micro
+  template:
+    metadata:
+      labels:
+        app: micro
+    spec:
+      containers:
+      - name: micro
+        image: kartikeyadhub/micro:latest  # This will be updated by Jenkins
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
