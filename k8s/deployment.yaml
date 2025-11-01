@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: micro
-        image: kartikeyadhub/micro:latest  # This will be updated by Jenkins
+        image: kartikeyadhub/micro:60
         ports:
         - containerPort: 8080
         env:
