@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: micro
-        image: kartikeyadhub/micro:93
+        image: kartikeyadhub/micro:94
         ports:
         - containerPort: 8080
         env:
