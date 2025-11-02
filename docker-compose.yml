@@ -5,10 +5,10 @@ services:
     image: mysql:8.0
     container_name: mysql-db
     environment:
-      MYSQL_ROOT_PASSWORD: Admin@123
+      MYSQL_ROOT_PASSWORD: apppassword123
       MYSQL_DATABASE: mydb
-      MYSQL_USER: Admin
-      MYSQL_PASSWORD: Admin@123     
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword123
     ports:
       - "3306:3306"
     volumes:
@@ -27,8 +27,8 @@ services:
     container_name: spring-app
     environment:
       DATABASE_URL: jdbc:mysql://mysql-db:3306/mydb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      DATABASE_USERNAME: Admin
-      DATABASE_PASSWORD: Admin@123
+      DATABASE_USERNAME: appuser
+      DATABASE_PASSWORD: apppassword123
       SPRING_PROFILES_ACTIVE: docker
       DB_HOST: mysql-db
       DB_NAME : mydb
