@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+      - name: spring-app
+        image: kartikeyadhub/micro:113
+        ports:
+        - containerPort: 8080
+        env:
+        # Use full DNS name
+        - name: DATABASE_URL
+          value: "jdbc:mysql://mysql-db:3306/mydb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+        - name: DATABASE_USERNAME
+          value: "appuser"
+        - name: DATABASE_PASSWORD
+          value: "apppassword123"
+        - name: SPRING_PROFILES_ACTIVE
+          value: "docker"
+        - name: SERVER_PORT
+          value: "8080"
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Using MySQL Service: mysql-db.default.svc.cluster.local"
+          echo "Starting Spring Boot application..."
+          java -jar app.jar
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app
+spec:
+  selector:
+    app: spring-app
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: NodePort
