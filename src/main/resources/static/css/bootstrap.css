@@ -1,4 +1,4 @@
-interface  ".col-main {
+.col-main {
   flex: 1;  
 }  
 
@@ -35,4 +35,3 @@ body {
 tr{
 	line-height: 1px;
 }
-"
