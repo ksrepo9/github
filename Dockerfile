@@ -11,8 +11,8 @@ COPY pom.xml .
 # Package the application
 RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime stage
-FROM openjdk:17-slim-bullseye
+# Stage 2: Runtime stage - USING CORRECT TAG
+FROM openjdk:17-jdk-slim
 
 # Create non-root user for security
 RUN groupadd -r spring && useradd -r -g spring spring
