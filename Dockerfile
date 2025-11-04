@@ -1,51 +1,41 @@
-# Stage 1: Build stage
-FROM maven:3.8.5-openjdk-17 AS builder
+# ---- Stage 1: Build ----
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
-# Set working directory for build
 WORKDIR /build
 
-# Copy source code and pom.xml
-COPY src ./src
+# Leverage layer caching: copy pom.xml first, resolve deps
 COPY pom.xml .
+RUN mvn -B -q -e -DskipTests dependency:go-offline
 
-# Package the application
-RUN mvn clean package -DskipTests
+# Copy sources and build
+COPY src ./src
+RUN mvn -B -q clean package -DskipTests
 
-# Stage 2: Runtime stage - USING CORRECT TAG
-FROM openjdk:17-jdk-slim
+# ---- Stage 2: Runtime ----
+FROM eclipse-temurin:17-jre-alpine
 
-# Create non-root user for security
-RUN groupadd -r spring && useradd -r -g spring spring
+# Create non-root user
+RUN addgroup -S spring && adduser -S spring -G spring
 
-# Install curl for healthcheck and clean up in single layer
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get clean
-
-# Create app directory
 WORKDIR /app
 
-# Copy JAR file from build stage (directly from target directory)
-COPY --from=builder /build/target/*.jar app.jar
+# Copy the fat jar from the build stage
+COPY --from=builder /build/target/*-SNAPSHOT.jar /app/app.jar
+# If your jar name isn’t -SNAPSHOT, use:
+# COPY --from=builder /build/target/*.jar /app/app.jar
 
-# Change ownership to spring user
-RUN chown -R spring:spring /app
-
-# Switch to non-root user
-USER spring
-
-# Expose port
+# Optional: minimal metadata
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
+ENV SPRING_PROFILES_ACTIVE=docker
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+# Install curl for healthchecks only (Alpine)
+RUN apk add --no-cache curl
 
-# Run the application with optimized JVM settings
-ENTRYPOINT ["java", \
-            "-Dspring.profiles.active=docker", \
-            "-Djava.security.egd=file:/dev/./urandom", \
-            "-XX:+UseContainerSupport", \
-            "-XX:MaxRAMPercentage=75.0", \
-            "-jar", "app.jar"]
+# Healthcheck against Spring Boot Actuator (adjust path if needed)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD curl -fsS http://localhost:8080/actuator/health || exit 1
+
+USER spring
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dspring.profiles.active=$SPRING_PROFILES_ACTIVE -jar /app/app.jar"]
