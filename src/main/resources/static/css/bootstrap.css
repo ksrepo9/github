@@ -1,37 +1,150 @@
-interface  ".col-main {
-  flex: 1;  
-}  
-
-.col-complementary {
-  flex: 1;  
+/* ===== ENHANCED LAYOUT SYSTEM ===== */
+.col-main {
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Responsive: */
+.col-complementary {
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+/* ===== RESPONSIVE LAYOUT ===== */
 @media only screen and (min-width: 640px) {
   .layout {
     display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  
+  .col-main:hover,
+  .col-complementary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.15);
   }
 }
 
-/* etc */
-
+/* ===== ENHANCED CONTAINER SYSTEM ===== */
 body {
   margin: 1.5em;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .container {
-  max-width: 60em;
+  max-width: 75em;
   margin-right: auto;
   margin-left: auto;
+  padding: 0 1rem;
 }
 
+/* ===== MODERN CARD STYLES ===== */
 .col {
-  padding: 1em;
-  margin: 0 2px 2px 0;
-  background: #f6f5f3;
+  padding: 1.75em;
+  margin: 0 0 1.5rem 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-tr{
-	line-height: 1px;
+.col::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.col:hover::before {
+  transform: scaleX(1);
+}
+
+.col:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ===== ENHANCED TABLE STYLES ===== */
+tr {
+  line-height: 1.2;
+  transition: background-color 0.2s ease;
+}
+
+tr:hover {
+  background-color: rgba(102, 126, 234, 0.05);
+}
+
+/* ===== SMOOTH SCROLLING ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===== FOCUS STATES ===== */
+.col:focus-within {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
+  }
+  
+  .col {
+    background: rgba(45, 55, 72, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #E2E8F0;
+  }
+  
+  .col:hover {
+    background: rgba(45, 55, 72, 1);
+  }
+}
+
+/* ===== MOBILE OPTIMIZATIONS ===== */
+@media only screen and (max-width: 639px) {
+  body {
+    margin: 1em;
+  }
+  
+  .col {
+    padding: 1.25em;
+    margin: 0 0 1rem 0;
+    border-radius: 12px;
+  }
+  
+  .layout {
+    gap: 1rem;
+  }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+@media (prefers-reduced-motion: reduce) {
+  .col,
+  .col-main,
+  .col-complementary {
+    transition: none;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
 }
