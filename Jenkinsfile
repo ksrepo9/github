@@ -10,7 +10,7 @@ pipeline {
         GIT_REPO = 'https://github.com/ksrepo9/github.git'
         GIT_BRANCH = 'main'
         K8S_MANIFESTS_DIR = 'k8s'
-        DEPLOYMENT_FILE = 'deployment.yaml'
+        DEPLOYMENT_FILE = 'app-deployment.yaml'
     }
     
     stages {
