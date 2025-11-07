@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+      - name: spring-app
+        image: kartikeyadhub/micro:127
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          value: "jdbc:mysql://mysql-db:3306/mydb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+        - name: DATABASE_USERNAME
+          value: "appuser"
+        - name: DATABASE_PASSWORD
+          value: "apppassword123"
+        - name: SPRING_PROFILES_ACTIVE
+          value: "docker"
+        - name: SERVER_PORT
+          value: "8080"
+        # Add resource limits for stability
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"

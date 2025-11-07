@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS mydb;
+    USE mydb;
+    CREATE TABLE IF NOT EXISTS test_table (id INT PRIMARY KEY);
