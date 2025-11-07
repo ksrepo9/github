@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: spring-app
-        image: kartikeyadhub/micro:131
+        image: kartikeyadhub/micro:132
         ports:
         - containerPort: 8080
         env:
