@@ -34,8 +34,8 @@ pipeline {
                     
                     echo "=== Tagging built image ==="
                     sh """
-                        docker tag app-ci-spring-app ${DOCKER_REGISTRY}/${APP_NAME}:${BUILD_NUMBER}
-                        docker tag app-ci-spring-app ${DOCKER_REGISTRY}/${APP_NAME}:latest
+                        docker tag pro-ci-spring-app ${DOCKER_REGISTRY}/${APP_NAME}:${BUILD_NUMBER}
+                        docker tag pro-ci-spring-app ${DOCKER_REGISTRY}/${APP_NAME}:latest
                     """
                     
                     echo "=== Verifying tags ==="
